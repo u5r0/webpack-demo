@@ -1,1 +1,3 @@
-console.log("Hello there!");
+import component from "./component";
+
+document.body.appendChild(component());
