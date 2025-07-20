@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "webpack-cli --env mode=production",
+    "build": "webpack-cli --env mode=production --config webpack/webpack.config.js",
     "start": "npx serve dist",
     "dev": "webpack serve --config webpack/webpack.config.js",
+    "watch:nodemon": "npx nodemon --watch \"./webpack.*.*\" --exec \"pnpm dev\"",
     "watch": "node watch.js"
   },
   "keywords": [],
