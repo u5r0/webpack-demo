@@ -3,12 +3,14 @@ import * as parts from "./webpack.parts.js";
 
 const commonConfig = merge([
     { entry: ["./src/index.js"] },
-    parts.page({ title: "My App" })
+    parts.page({ title: "My App" }),
+    parts.loadCSS(),
 ]);
 
 const devConfig = merge([
     { mode: "development" },
 ]);
+
 const productionConfig = merge([
     { mode: "production" },
 ]);
