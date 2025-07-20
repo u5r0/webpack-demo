@@ -1,13 +1,25 @@
-import { MiniHtmlWebpackPlugin } from "mini-html-webpack-plugin";
+import { merge } from "webpack-merge";
+import * as parts from "./webpack.parts.js";
 
-export default (env) => ({
-    entry: "./src/index.js",
-    mode: env.mode || "development",
-    plugins: [
-        new MiniHtmlWebpackPlugin({ 
-            context: { 
-                title: "My App", 
-            } 
-        }),
-    ],
-});
+const commonConfig = merge([
+    { entry: ["./src/index.js"] },
+    parts.page({ title: "My App" })
+]);
+
+const devConfig = merge([
+    { mode: "development" },
+]);
+const productionConfig = merge([
+    { mode: "production" },
+]);
+
+const getConfig = (mode) => {
+    switch (mode) {
+        case "production":
+            return merge([commonConfig, productionConfig]);
+        default:
+            return merge([commonConfig, devConfig]);
+    }
+};
+
+export default (env) => getConfig(env.mode);
