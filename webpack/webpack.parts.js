@@ -35,13 +35,22 @@ export const extractCSS = ({ options = {} } = {}) => ({
                         loader: ExtractCssChunks.loader,
                         options,
                     },
-                    "css-loader",
-                    // {
-                    //     loader: "css-loader",
-                    //     options: {
-                    //         modules: true, // CSS Modules
-                    //     },
-                    // }
+                    {
+                        loader: "css-loader",
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    "@tailwindcss/postcss",
+                                ],
+                            },
+                        },
+                    }
                 ],
                 sideEffects: true, // This file has side effects and should not be tree-shaken
             }
@@ -54,3 +63,14 @@ export const extractCSS = ({ options = {} } = {}) => ({
         }),
     ],
 });
+
+export const postcss = () => ({
+    loader: "postcss-loader",
+    options: {
+      postcssOptions: { 
+        plugins: [
+            "@tailwindcss/postcss",
+        ],
+      },
+    },
+  });

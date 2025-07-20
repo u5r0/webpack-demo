@@ -11,20 +11,22 @@ const commonConfig = merge([
         entry: {
             main: [
                 "./src/index.js",
-                "./src/main.css",
+                "./src/style/index.css",
             ]
         },
     },
     parts.page({ title: "My App" }),
-    parts.extractCSS(),
-]);
-
-const devConfig = merge([
-    { mode: "development" },
+    parts.extractCSS({
+        // loaders: [parts.postcss()],
+    }),
 ]);
 
 const productionConfig = merge([
     { mode: "production" },
+]);
+
+const devConfig = merge([
+    { mode: "development" },
 ]);
 
 const getConfig = (mode) => {
