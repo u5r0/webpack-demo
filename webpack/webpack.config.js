@@ -16,9 +16,7 @@ const commonConfig = merge([
         },
     },
     parts.page({ title: "My App" }),
-    parts.extractCSS({
-        // loaders: [parts.postcss()],
-    }),
+    parts.extractCSS(),
 ]);
 
 const productionConfig = merge([

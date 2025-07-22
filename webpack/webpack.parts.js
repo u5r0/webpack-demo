@@ -9,18 +9,6 @@ export const page = ({ title }) => ({
     ],
 });
 
-// CSS inlined in the javascript bundle
-export const loadCSS = () => ({
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: [ "style-loader", "css-loader" ] // styleLoader(cssLoader(input))
-            }
-        ]
-    }
-});
-
 // CSS extracted to a separate file
 // Useful for production builds to reduce the size of the JS bundle
 // Avoids the FOUC problem. The browser doesn’t wait for JavaScript to get styling information
@@ -43,13 +31,6 @@ export const extractCSS = ({ options = {} } = {}) => ({
                     },
                     {
                         loader: "postcss-loader",
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    "@tailwindcss/postcss",
-                                ],
-                            },
-                        },
                     }
                 ],
                 sideEffects: true, // This file has side effects and should not be tree-shaken
@@ -64,13 +45,15 @@ export const extractCSS = ({ options = {} } = {}) => ({
     ],
 });
 
-export const postcss = () => ({
-    loader: "postcss-loader",
-    options: {
-      postcssOptions: { 
-        plugins: [
-            "@tailwindcss/postcss",
-        ],
-      },
-    },
-  });
+
+// CSS inlined in the javascript bundle
+export const loadCSS = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [ "style-loader", "css-loader" ] // styleLoader(cssLoader(input))
+            }
+        ]
+    }
+});
