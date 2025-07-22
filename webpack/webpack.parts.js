@@ -57,3 +57,67 @@ export const loadCSS = () => ({
         ]
     }
 });
+
+
+// pre, normal, inline, post
+const moduleOfRules = {
+    rules: [
+        {
+            test: /\.css$/,
+            // enforce: "post",
+            use: ({ resource, resourceQuery, issuer }) => {
+                if (env === "production") {
+                    return [
+                        (info) => ({
+                            loader: "style-loader",
+                        }),
+                        {
+                            loader: "css-loader",
+                            options: { 
+                                importLoaders: 1,
+                                sourceMap: true,
+                                presets: [
+                                    "postcss",
+                                ],
+                            },
+                        },
+                        {
+                            loader: "postcss-loader",
+                        },
+                        {
+                            assert: { type: 'json' },
+                            loader: import.meta.resolve('./loader-json.js')
+                        }
+                    ];
+                }
+                return [];
+            },
+        },
+        {
+            test: /\.js$/,
+            oneOf: [
+                {
+                    resourceQuery: /url/, // foo.css?url
+                    type: 'asset/url',
+                },
+                {
+                    resourceQuery: /query/, // foo.css?query
+                    type: 'asset/resource',
+                },
+            ],
+            sideEffects: true,
+        },
+        {
+            issuer: { not: /\.js$/ }, 
+            use: "style-loader",
+        },
+        {
+            // compiler: "compiler-name",
+            // include: /src/,
+            // exclude: /node_modules/,
+            resource: /inline/, // path/foo.inline.js and path/bar.png?inline
+            resourcePath: /inline/, // path/foo.inline.png
+            resourceQuery: /inline/, // path/foo.png?inline
+        }
+    ]
+};
