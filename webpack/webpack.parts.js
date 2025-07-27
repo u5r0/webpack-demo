@@ -1,5 +1,5 @@
 import { MiniHtmlWebpackPlugin } from "mini-html-webpack-plugin";
-import ExtractCssChunks from "extract-css-chunks-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 export const page = ({ title }) => ({
     plugins: [
@@ -7,6 +7,22 @@ export const page = ({ title }) => ({
             context: { title }
         }),
     ],
+});
+
+export const loadImages = ({ limit = 8 * 1024 } = {}) => ({
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg|gif)$/,
+                type: "asset",
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: limit
+                    }
+                }
+            }
+        ]
+    }
 });
 
 // CSS extracted to a separate file
@@ -20,8 +36,11 @@ export const extractCSS = ({ options = {} } = {}) => ({
                 test: /\.css$/,
                 use: [
                     {
-                        loader: ExtractCssChunks.loader,
-                        options,
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: "../", // <-- This is required!
+                            ...options,
+                        },
                     },
                     {
                         loader: "css-loader",
@@ -38,7 +57,7 @@ export const extractCSS = ({ options = {} } = {}) => ({
         ]
     },
     plugins: [
-        new ExtractCssChunks({
+        new MiniCssExtractPlugin({
             filename: "styles/[name].css",
             chunkFilename: "styles/[id].css",
         }),
