@@ -14,7 +14,13 @@ export const loadImages = ({ limit = 8 * 1024 } = {}) => ({
         rules: [
             {
                 test: /\.(png|jpg|gif)$/,
+                // Below the limit, it should inline the image 
+                // while above it should emit a separate asset and a path to it.
                 type: "asset",
+                // use: {
+                //     loader: "responsive-loader",
+                //     // options: {}
+                // },
                 parser: {
                     dataUrlCondition: {
                         maxSize: limit
@@ -38,7 +44,7 @@ export const extractCSS = ({ options = {} } = {}) => ({
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: "../", // <-- This is required!
+                            publicPath: "../",
                             ...options,
                         },
                     },

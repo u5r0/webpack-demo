@@ -17,7 +17,7 @@ const commonConfig = merge([
     },
     parts.page({ title: "My App" }),
     parts.extractCSS(),
-    parts.loadImages({ limit: 50 * 1024 }),
+    parts.loadImages({ limit: 15 * 1024 }),
 ]);
 
 const productionConfig = merge([
