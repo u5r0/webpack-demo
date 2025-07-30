@@ -9,15 +9,41 @@ export const page = ({ title }) => ({
     ],
 });
 
+export const loadSVG = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.svg$/,
+                type: "asset",
+                use: ["@svgr/webpack"], // Use SVGR to transform SVGs into React components
+            }
+        ]
+    }
+});
+
 export const loadImages = ({ limit = 8 * 1024 } = {}) => ({
     module: {
         rules: [
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpe?g)$/,
                 type: "asset",
+                // use: [
+                //     {
+                //         loader: "lqip-loader",
+                //         options: {
+                //             limit,
+                //             path: '/media',
+                //             base64: true,
+                //             palette: true,
+                //         },
+                //         resolve: {
+                //             fallback: "file-loader",
+                //         }
+                //     },
+                // ],
                 parser: {
                     dataUrlCondition: {
-                        maxSize: limit
+                        maxSize: limit, // Convert images smaller than (limit) to data URLs
                     }
                 }
             }
